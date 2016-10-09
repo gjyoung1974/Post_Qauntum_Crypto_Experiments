@@ -26,14 +26,15 @@ public class HelloWorld {
         SPHINCSPublicKeyParameters pub = (SPHINCSPublicKeyParameters) kp.getPublic();
         MessageSigner sphincsSigner = new SPHINCS256Signer(new SHA3Digest(256), new SHA3Digest(512));
         sphincsSigner.init(true, priv);
-        byte[] sig = sphincsSigner.generateSignature("This is a test".getBytes());
+
+        byte[] msg = "This is a test".getBytes();
+
+        byte[] sig = sphincsSigner.generateSignature(msg);
         String out = new String(sig);
 
         sphincsSigner.init(false, pub);
-        //isTrue("sha3 r sig verify failed", sphincsSigner.verifySignature(msg, sig));
-        //isTrue("sha3 r wrong verify failed", !sphincsSigner.verifySignature(msg, expBlakeSig));
-
-
-        System.out.println(out);
+        boolean test = sphincsSigner.verifySignature(msg, sig);
+        
+        System.out.println(out +  "\n" + test);
     }
 }
